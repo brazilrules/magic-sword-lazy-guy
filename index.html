@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="maps/lvl1.js"></script>
+		<script src="maps/lvl2.js"></script>
+		<script src="maps/lvl3.js"></script>
+		<script src="maps/lvl4.js"></script>
+		<script>
+			var c;
+			var ctx;
+			var level = 1;
+			var levelStart;
+			
+			function findStart() {
+				for (y in map) {
+					for (x in map[y]) {
+						if(map[y][x] == 3) {
+							return {'x': x,'y': y};
+						}
+					}
+				}
+			}
+			
+			function init() {
+				map = eval("lvl"+level);
+				levelStart = findStart();
+				c = document.getElementById("gameScreen");
+				ctx = c.getContext("2d");
+				start();
+			}
+		</script>
+		<script src="js/player.js"></script>
+		<script src="js/graphics.js"></script>
+		<script src="js/physhics.js"></script>
+		<script src="js/stateMachine.js"></script>
+		<script>
+			function start() {
+				setX(levelStart.x);
+				setY(levelStart.y-1);
+				requestAnimationFrame(mainLoop);
+			}
+			function mainLoop() {
+				drawMap();
+				runMachine();
+				calculate();
+				drawSprite();
+				thinkAndAct();
+				requestAnimationFrame(mainLoop);
+			}
+		</script>
+		<style>
+			canvas {
+				background: cyan;
+			}
+		</style>
+	</head>
+	<body onload="init()">
+		<canvas id="gameScreen" width="1280" height="960">
+		</canvas>
+	</body>
+</html>
